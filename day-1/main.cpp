@@ -19,6 +19,7 @@ int main()
     - left e.g., 50 - 50 = 0, 50 - 51 = -1 so (100 - 1) = 99, 50 - 62 so (100 - 12) = 82
     - when right: dial + number, if greater than or equal to 100 then (sum - 100)
     - right e.g. 50 + 49 = 99, 50 + 50 == (100 - 100), 50 + 62 (112 - 100) = 12, 99 + 2 (101 - 100)
+    24 / 12 =
     */
 
     int dial{50};
@@ -35,6 +36,7 @@ int main()
 
         if (currDial[0] == 'L') // turn left
         {
+            std::cout << std::stoi(currDial.substr(startIndex)) << "\n";
             newDial = dial - std::stoi(currDial.substr(startIndex));
             if (newDial < 0)
             {

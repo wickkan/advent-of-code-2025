@@ -26,10 +26,22 @@ int main() {
     products.push_back(product);
   }
 
-  for (std::size_t i = 0; i < products.size(); i++) {
-    for (std::size_t j = 0; j < products[i].size(); j++) {
-      std::cout << products[i][j] << "\n";
+  std::vector<std::pair<int, int>> ranges;
+
+  for (const auto &p : products) {
+    std::stringstream ss2(p);
+    std::string token;
+    std::vector<int> parts;
+
+    while (std::getline(ss2, token, '-')) {
+      parts.push_back(std::stoi(token));
     }
+
+    ranges.push_back({parts[0], parts[1]});
+  }
+
+  for (const auto &r : ranges) {
+    std::cout << r.first << '-' << r.second << "\n";
   }
 
   return 0;

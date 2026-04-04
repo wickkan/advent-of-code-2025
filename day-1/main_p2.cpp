@@ -14,14 +14,15 @@ int main() {
   while (std::getline(file, cmd)) {
     char direction = cmd[0];
     int rotations = std::stoi(cmd.substr(1));
+    int remainder = rotations % MOD;
 
     if (direction == 'L') {
-      int remainder = rotations % MOD;
-      answer += (rotations / MOD) + (position == 0 ? (remainder > 0) : (remainder >= position));
+      int distToZero = (position == 0) ? MOD : position;
+      answer += (rotations / MOD) + (remainder > 0 && remainder >= distToZero ? 1 : 0);
       position = (position - remainder + MOD) % MOD;
-    } else if (direction == 'R') {
-      int remainder = rotations % MOD;
-      answer += (rotations / MOD) + (position == 0 ? (remainder > 0) : (remainder >= MOD - position));
+    } else {
+      int distToZero = (position == 0) ? MOD : (MOD - position);
+      answer += (rotations / MOD) + (remainder > 0 && remainder >= distToZero ? 1 : 0);
       position = (position + remainder) % MOD;
     }
   }

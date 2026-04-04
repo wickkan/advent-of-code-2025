@@ -1,38 +1,31 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <string_view>
 
-const int MOD{100};
+const int MOD = 100;
 
 int main() {
-  std::ifstream file{"data.txt"};
-  std::string move{};
+  std::ifstream file("data.txt");
+  std::string cmd;
 
-  // if we can't open the data for reading
-  if (!file) {
-    std::cerr << ("data.txt could not be opened for reading");
-  }
+  int position = 50;
+  int pwd = 0;
 
-  int dial{50};
-  int answer{};
+  while (std::getline(file, cmd)) {
+    char direction = cmd[0];
+    int rotations = std::stoi(cmd.substr(1));
 
-  while (std::getline(file, move)) {
-
-    char direction{move[0]};
-    int rotation{std::stoi(move.substr(1, move.length()))};
-
-    if (direction == 'L') // turn left
-    {
-      dial = (dial - rotation + MOD) % MOD;
-      //   put in if condition for if dial == 0 and how many times it passed 0
-    } else if (direction == 'R') // turn right
-    {
-      dial = (dial + rotation) % MOD;
-      //   put in if condition for if dial == 0 and how many times it passed 0
+    if (direction == 'L') {
+      int remainder = rotations % MOD;
+      pwd += (rotations / MOD) + (position == 0 ? (remainder > 0) : (remainder >= position));
+      position = (position - remainder + MOD) % MOD;
+    } else if (direction == 'R') {
+      int remainder = rotations % MOD;
+      pwd += (rotations / MOD) + (position == 0 ? (remainder > 0) : (remainder >= MOD - position));
+      position = (position + remainder) % MOD;
     }
   }
 
-  std::cout << answer << "\n";
+  std::cout << pwd << "\n";
   return 0;
 }

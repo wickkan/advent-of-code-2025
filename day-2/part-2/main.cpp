@@ -4,49 +4,64 @@
 #include <string>
 #include <vector>
 
-int main() {
-  std::ifstream file{"data.txt"};
-  std::string content;
-  std::getline(file, content);
-
-  std::vector<std::string> products;
-  std::stringstream ss(content);
-  std::string product;
-
-  // adding all of the ranges to the products list
-  while (std::getline(ss, product, ',')) {
-    products.push_back(product);
-  }
-
+// parsing the ranges
+std::vector<std::pair<long long, long long>> parseRanges(const std::string &content) {
   std::vector<std::pair<long long, long long>> ranges;
+  std::stringstream ss(content);
+  std::string token;
 
-  for (const auto &p : products) {
-    std::stringstream ss2(p);
-    std::string token;
+  while (std::getline(ss, token, ',')) {
+    std::stringstream ss2(token);
+    std::string part;
     std::vector<long long> parts;
 
-    while (std::getline(ss2, token, '-')) {
-      parts.push_back(std::stoll(token));
+    while (std::getline(ss2, part, '-')) {
+      parts.push_back(std::stoll(part));
     }
 
     ranges.push_back({parts[0], parts[1]});
   }
 
+  return ranges;
+}
+
+// determining if an ID is invalid
+bool isInvalid(long long n) {
+
+  std::string s = std::to_string(n);
+  long long len = static_cast<int>(s.length());
+
+  for (long long k = 1; k <= len / 2; k++) {
+    if (len % k == 0) {
+      std::string substring{s.substr(0, k)};
+      std::string repeated{""};
+      long long repetitions{len / k};
+
+      for (int i = 0; i < repetitions; i++) {
+        repeated += substring;
+      }
+
+      if (repeated == s) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+int main() {
+  std::ifstream file{"data.txt"};
+  std::string content;
+  std::getline(file, content);
+
+  auto ranges = parseRanges(content);
+
   long long answer{};
   for (const auto &r : ranges) {
     for (long long i = r.first; i <= r.second; i++) {
-      std::string s = std::to_string(i);
-      if (s.length() % 2 == 0) {
-        int length{static_cast<int>(s.length())};
-        int left{0};
-        int right{length / 2};
-        while (right < length && s[left] == s[right]) {
-          left++;
-          right++;
-        }
-        if (right == length) {
-          answer += i;
-        }
+      if (isInvalid(i)) {
+        answer += i;
       }
     }
   }

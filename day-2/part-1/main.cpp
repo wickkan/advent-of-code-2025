@@ -9,24 +9,14 @@ bool isInvalid(long long n) {
   int len = s.length();
 }
 
-int main() {
-  std::ifstream file{"data.txt"};
-  std::string content;
-  std::getline(file, content);
-
-  std::vector<std::string> products;
+// parsing the ranges
+std::vector<std::pair<long long, long long>> parseRanges(const std::string &content) {
+  std::vector<std::pair<long long, long long>> ranges;
   std::stringstream ss(content);
   std::string product;
 
-  // adding all of the ranges to the products list
   while (std::getline(ss, product, ',')) {
-    products.push_back(product);
-  }
-
-  std::vector<std::pair<long long, long long>> ranges;
-
-  for (const auto &p : products) {
-    std::stringstream ss2(p);
+    std::stringstream ss2(product);
     std::string token;
     std::vector<long long> parts;
 
@@ -36,6 +26,14 @@ int main() {
 
     ranges.push_back({parts[0], parts[1]});
   }
+}
+
+int main() {
+  std::ifstream file{"data.txt"};
+  std::string content;
+  std::getline(file, content);
+
+  auto ranges = parseRanges(content);
 
   long long answer{};
   for (const auto &r : ranges) {

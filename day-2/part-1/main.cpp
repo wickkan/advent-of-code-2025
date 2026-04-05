@@ -4,6 +4,11 @@
 #include <string>
 #include <vector>
 
+bool isInvalid(long long n) {
+  std::string s = std::to_string(n);
+  int len = s.length();
+}
+
 int main() {
   std::ifstream file{"data.txt"};
   std::string content;

@@ -22,7 +22,15 @@ int main() {
     }
 
     int right{};
-    for (int i = leftIndex)
+    if (leftIndex + 1 == move.size()) { // it is at last index
+      for (int i = 0; i < leftIndex; i++) {
+        int digit{move[i] - '0'};
+        if (right < digit) {
+          right = digit;
+        }
+      }
+    } else {
+    }
   }
 
   return 0;
